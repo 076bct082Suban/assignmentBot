@@ -1,17 +1,16 @@
-const Discord = require("discord.js");
-const {prefix, token, bot_info} = require("./config.json");
+const Discord = require('discord.js');
+const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 const fs = require('fs');
-const { error } = require("console");
 const schedule = require('node-schedule');
-let current_schedules = {}
+const current_schedules = {};
 
 client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 
 client.on('ready', () => {
-    console.log("listening.....");
+    console.log('listening.....');
 });
 
 
@@ -21,17 +20,18 @@ client.on('message', (message) => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
-    
-    console.log(args)
+
+    console.log(args);
     console.log(command);
 
     if (!client.commands.has(command)) return;
 
     try {
-        client.commands.get(command).execute(message, args, schedule, current_schedules)
-    }catch(err){
+        client.commands.get(command).execute(message, args, schedule, current_schedules);
+    }
+    catch(err) {
         console.error(err);
-        message.reply('There was an issue executing that command.')
+        message.reply('There was an issue executing that command.');
     }
 
 });
@@ -39,8 +39,8 @@ client.on('message', (message) => {
 client.login(token);
 
 
-for (const file of commandFiles){
-    const command = require(`./commands/${file}`)
-    client.commands.set(command.name, command)
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
 }
 console.log('here');
