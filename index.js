@@ -11,6 +11,13 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 client.on('ready', () => {
     console.log('listening.....');
+    client.user.setPresence({
+        'activity': {
+            name: 'Me getting built',
+            type: 'WATCHING',
+        },
+        status: 'online',
+    });
 });
 
 
@@ -28,8 +35,7 @@ client.on('message', (message) => {
 
     try {
         client.commands.get(command).execute(message, args, schedule, current_schedules);
-    }
-    catch(err) {
+    } catch(err) {
         console.error(err);
         message.reply('There was an issue executing that command.');
     }
